@@ -2,6 +2,7 @@ import yfinance as yf
 import pandas as pd
 
 def get_price_df(ticker1, ticker2):
+    """Retrieves OHLC price data for asset pair from Yahoo Finance"""
 
     asset1 = yf.Ticker(ticker1)
     asset2 = yf.Ticker(ticker2)
