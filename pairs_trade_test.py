@@ -3,9 +3,9 @@ import numpy as np
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 import plotly.express as px
+import plotly.io as pio
 
 pd.options.mode.chained_assignment = None
-
 
 def extract_curr_df(df, num_days_in_year, num_test_years, test_num):
     """Returns the relevant dataframe for current testing year"""
@@ -407,7 +407,8 @@ class Pairs_trade_test:
         top_strategies_df = df.iloc[:n]
         return pd.concat([top_strategies_df, buy_and_hold_df]).reset_index(drop=True)
 
-    def plot_top_strategies_helper(optimal_parameter_list, cum_pnl_dict, n):
+    @staticmethod
+    def plot_top_strategies_helper(optimal_parameter_list, cum_pnl_dict, n, renderer='jupyterlab'):
         """Helper function to plot the cumulative PnL of the top n strategies and buy and hold strategy"""
 
         new_cum_pnl_dict = {
@@ -433,7 +434,7 @@ class Pairs_trade_test:
             labels={"index": "Index", "Value": "Cumulative PnL", "Series": "Strategy"},
         )
         fig.update_layout(width=1000, height=600)
-        fig.show()
+        fig.show(renderer=renderer)
 
     @staticmethod
     def plot_top_strategies(
@@ -446,6 +447,7 @@ class Pairs_trade_test:
         num_days_in_year,
         num_test_years,
         n,
+        renderer='jupyterlab'
     ):
         """Calculates and Plots the cumulative PnL of the top n strategies and buy and hold strategy"""
 
@@ -485,5 +487,5 @@ class Pairs_trade_test:
         cum_pnl_dict["Buy and Hold"] = full_df["cum_pnl"]
 
         Pairs_trade_test.plot_top_strategies_helper(
-            optimal_parameter_list, cum_pnl_dict, n
+            optimal_parameter_list, cum_pnl_dict, n, renderer
         )
